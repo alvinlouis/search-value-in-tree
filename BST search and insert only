@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <conio.h>
+#include <malloc.h>
+
+struct node {
+	int key;
+	struct node *left;
+	struct node *right;
+} *root;
+
+void search(struct node* curr, int find) {
+	while (curr != NULL && curr->key != find) {
+		if (find < curr->key) {
+			curr = curr->left;
+		}
+		else if (find > curr->key) {
+			curr = curr->right;
+		}
+	}
+	if (curr == NULL) {
+		printf("not found\n");
+	}
+	else if (curr->key == find) {
+		printf("%d is found\n", curr->key);
+	}
+}
+
+void insert(struct node* curr, int val) {
+	struct node *new_node = (struct node*) malloc(sizeof(struct node));
+	new_node->key = val;
+	new_node->left = NULL;
+	new_node->right = NULL;
+
+	if (root == NULL) {
+		root = new_node;
+	}
+	else if (val != curr->key) {
+		if (val < curr->key && curr->left == NULL) {
+			curr->left = new_node;
+		}
+		else if (val > curr->key && curr->right == NULL) {
+			curr->right = new_node;
+		}
+		else if (val < curr->key && curr->left != NULL) {
+			insert(curr->left, val);
+		}
+		else if (val > curr->key && curr->right != NULL) {
+			insert(curr->right, val);
+		}
+	}
+}
+
+int main() {
+	root = NULL;
+	insert(root, 99);
+	insert(root, 40);
+	insert(root, 12);
+	insert(root, 44);
+	insert(root, 29);
+		
+	search(root, 44);
+	search(root,5);
+	
+	return 0;
+}
